@@ -1,0 +1,9 @@
+export const GET_DOGS = "GET_ALL_DOGS";
+export const DETAIL = "DETAIL";
+export const SEARCH_BY_NAME = "SEARCH_BY_NAME";
+export const TEMP_DOG = "TEMP_DOG";
+export const WEIGHT_FILTER = "WEIGHT_FILTER";
+export const ALPH_FILTER = " ALPH_FILTER";
+export const TEMP_FILTER = "TEMP_FILTER";
+export const CREATED = "CREATED";
+export const POST_DOG = "POST_DOG" ; 
