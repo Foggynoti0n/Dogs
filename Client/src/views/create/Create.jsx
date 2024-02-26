@@ -5,6 +5,58 @@ import { getTemperaments, allDogs, postDog} from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 import './Create.css'
 
+const regURL= /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+      
+  
+
+const validate = (input) => {
+  const errors={}
+
+
+    
+    if (input.name === "") {
+      errors.name= 'Name is null'
+    }
+
+    if (input.image=== "" || !regURL.test(input.image) ) {
+      errors.image = "We  want to see your dog image";
+    }
+
+  
+    if (input.height_min === "" ) {
+      errors.height_min = "You must indicate the minimum height";
+    } else if (parseInt(input.height_min)> parseInt(input.height_max)) {
+      errors.height_min = "Height(min) must be less than Height(max)";
+   }
+
+    if (input.height_max === "" ) {
+         errors.height_max = "You must indicate the maximum height";
+      } else if (parseInt(input.height_max) < parseInt(input.height_min )) {
+        errors.height_max = "Height(max) must be greater than Height(min) ";
+     }
+     if (input.weight_min === "" ) {
+      errors.weight_min = "You must indicate the minimum weight";
+    } else if (parseInt(input.weight_min)> parseInt(input.weight_max)) {
+      errors.weight_min = "Weight(min) must be less than Weight(max) ";
+   }
+
+    if (input.weight_max === "" ) {
+         errors.weight_max = "You must indicate the maximum weight";
+      } else if (parseInt(input.weight_max) < parseInt(input.weight_min )) {
+        errors.weight_max = "Weight(max) must be greater than Weight(min)";
+     }
+
+     if (input.life_span === "" ) {
+      errors.life_span = "You must indicate life span";
+    }
+
+    if (input.temperament == '') {
+      errors.temperament= ''
+    }
+
+
+    return errors;
+  }
 
 
 
@@ -37,65 +89,14 @@ export default function Create(){
       height_max: '',
       weight_min:'',
       weight_max:'',  
-      life_span: ''
+      life_span: '',
+      temperament:''
       
       });
 
 
-    const regURL= /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
-      
   
-
-    const validate = (input) => {
-      const errors={}
-
-    
-        
-        if (input.name === "") {
-          errors.name= 'Name is null'
-        }
-
-        if (input.image=== "" || !regURL.test(input.image) ) {
-          errors.image = "We  want to see your dog image";
-        }
-
-      
-        if (input.height_min === "" ) {
-          errors.height_min = "You must indicate the minimum height";
-        } else if (parseInt(input.height_min)> parseInt(input.height_max)) {
-          errors.height_min = "Height(min) must be less than Height(max)";
-       }
-
-        if (input.height_max === "" ) {
-             errors.height_max = "You must indicate the maximum height";
-          } else if (parseInt(input.height_max) < parseInt(input.height_min )) {
-            errors.height_max = "Height(max) must be greater than Height(min) ";
-         }
-         if (input.weight_min === "" ) {
-          errors.weight_min = "You must indicate the minimum weight";
-        } else if (parseInt(input.weight_min)> parseInt(input.weight_max)) {
-          errors.weight_min = "Weight(min) must be less than Weight(max) ";
-       }
-
-        if (input.weight_max === "" ) {
-             errors.weight_max = "You must indicate the maximum weight";
-          } else if (parseInt(input.weight_max) < parseInt(input.weight_min )) {
-            errors.weight_max = "Weight(max) must be greater than Weight(min)";
-         }
-
-         if (input.life_span === "" ) {
-          errors.life_span = "You must indicate life span";
-        }
   
-
-        return errors;
-      }
-      
-    
-   
-    
-
-
     useEffect(()=>{
         dispatch(getTemperaments())
        dispatch(allDogs())
@@ -146,7 +147,8 @@ export default function Create(){
               height_max: '',
               weight_min:'',
               weight_max:'', 
-              life_span:''
+              life_span:'',
+              temperament:''
             
             });
       
@@ -239,23 +241,14 @@ export default function Create(){
 
             </div>
 
-
-
-            <div className="formItems">
-            <div className="label">
-                 <label > Life span</label>
-                 </div>
-                    <input   type = 'number' value = {input.life_span}  onChange = {handleChange} name='life_span'  key="life_span" />
-                    <span>{inputsErrors?.life_span && inputsErrors.life_span}</span>
-            </div>
               
                    <div className="formItems">
                                
                    <div className="label">
                  <label >Temperament</label>
                  </div>
-                    <select onChange={e=>handleSelectTemperaments(e)}>
-                        <option value='temperament' key='temperament'></option>
+                    <select multiple  value={input.temperament} onChange={e=>handleSelectTemperaments(e)}>
+                      
                         {temperamentsDb.map((t) => {
                             return(
                                 <option value={t} key={t}>{t + ' '}</option>
@@ -270,7 +263,15 @@ export default function Create(){
                     )}
                     </ul>
                    </div>
- 
+    
+    
+            <div className="formItems">
+            <div className="label">
+                 <label > Life span</label>
+                 </div>
+                    <input   type = 'number' value = {input.life_span}  onChange = {handleChange} name='life_span'  key="life_span" />
+                    <span>{inputsErrors?.life_span && inputsErrors.life_span}</span>
+            </div>
               
           
       
