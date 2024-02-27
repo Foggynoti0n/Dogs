@@ -11,8 +11,6 @@ function Home(){
   
     const dispatch = useDispatch();
     const allDogsState = useSelector((state) => state.AllDogs);
-    const Copy= useSelector((state)=> state.Copy)
-    
     // console.log(allDogsState);
 
 
@@ -40,15 +38,23 @@ dispatch(allDogs())
 
 
 useEffect(() => {
-  console.log('filteredDogs:', Copy);
-  // console.log('allDogs:', allDogs);
-}, [Copy, allDogsState]);
+}, [ allDogsState]);
 
 
     return(
     <>
-
+<div id="title">
+  <h1>All dog breds</h1>
+  <hr />
+</div>
   <div id="section">
+
+   <div id="index">
+    <h3>Index</h3>
+ 
+      {currentDogs?.map((dog)=>{ return (<li key={dog.id}>| <Link to={`/dogs/${dog.id}`} >{dog.name} </Link> </li>)})}
+ 
+   </div>
 <Cards dogs={dogs} allDogsState= {currentDogs} all={allDogsState.length} page={page} currentPage={currentPage} />  
 
   </div>

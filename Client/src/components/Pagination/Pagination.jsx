@@ -16,7 +16,7 @@ export default function Pages({dogs, all, page, currentPage}) {
   }
 
   function nextHandler(currentPage){
-    if(currentPage !== 22) page(currentPage + 1) 
+    if(currentPage !== 23) page(currentPage + 1) 
   }
 
    indexPage.pop()
@@ -28,14 +28,14 @@ export default function Pages({dogs, all, page, currentPage}) {
 <>
 <div className="paginationBar">
 <button key="prev" onClick={() => prevHandler(currentPage)} className='nextprev'> {prev} </button>
-  {/* {indexPage && indexPage.map((n) =>{
+  {indexPage && indexPage.map((n) =>{
     return(
-      <span className='spanPag' key={n} onClick={() => page(n)}>{`Page  ${(currentPage<6 ? `${currentPage}, ${currentPage+1},  ${currentPage+2}...`:currentPage===6 ?`${currentPage},${currentPage +1}...`:`${currentPage}`)}`}</span>
+      <span className='spanPag' key={n} onClick={() => page(n)}>{`Page ${currentPage}  `}</span>
   )
-  })} */}
+  })}
 
 
-<button key="next" onClick={() => nextHandler(currentPage)} className='nextprev'>{next}</button>
+<button key="next" onClick={() => nextHandler(currentPage)} className='nextprev'> {next}</button>
 </div>
 
 

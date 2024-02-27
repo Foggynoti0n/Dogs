@@ -9,7 +9,7 @@ import './Detail.css'
 export default function Detail() {
 const dispatch = useDispatch()
 const dog = useSelector((state) => state.Detail)
-console.log(dog);
+
 
 const { id } = useParams();
     

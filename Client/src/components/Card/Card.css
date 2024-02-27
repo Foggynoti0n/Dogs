@@ -1,6 +1,6 @@
 .div{
-    width: 380px;
-    height: 380px;
+    width: 300px;
+    height: 400px;
     display: flex;
     padding: 1em;
     flex-direction: column;
@@ -10,7 +10,7 @@
     color: rgb(36, 36, 36);
     text-align: center;
     position: relative;
-    margin-bottom: 5em;
+    margin-bottom: 1em;
     
 }
 

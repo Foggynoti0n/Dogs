@@ -5,13 +5,13 @@ import { getTemperaments, allDogs, postDog} from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 import './Create.css'
 
+
 const regURL= /(?:https?):\/\/(\w+:?\w*)?(\S+)(:\d+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
       
   
 
 const validate = (input) => {
   const errors={}
-
 
     
     if (input.name === "") {
@@ -49,16 +49,14 @@ const validate = (input) => {
      if (input.life_span === "" ) {
       errors.life_span = "You must indicate life span";
     }
-
-    if (input.temperament == '') {
-      errors.temperament= ''
-    }
+    
+  //  if (!input.temperament.length) {
+  //   errors.temperament= 'selecciona un temperamento'
+  //  }
 
 
     return errors;
   }
-
-
 
 export default function Create(){
     const dispatch = useDispatch()
@@ -70,16 +68,7 @@ export default function Create(){
   
 
 
-    const [input, setInput] = useState({
-        name: '', 
-        image: '',
-        height_min: '', 
-        height_max: '',
-        weight_min:'',
-        weight_max:'', 
-        temperament: [], 
-        life_span: ''
-    })
+
     
 
     const [inputsErrors, setInputsErrors] = useState({
@@ -90,19 +79,35 @@ export default function Create(){
       weight_min:'',
       weight_max:'',  
       life_span: '',
-      temperament:''
+      temepraments:''
       
       });
 
 
-  
-  
+ 
+      
+    
+
+
     useEffect(()=>{
         dispatch(getTemperaments())
        dispatch(allDogs())
     }, [dispatch])
 
-    
+
+
+const [input, setInput] = useState({
+  name: '', 
+  image: '',
+  height_min: '', 
+  height_max: '',
+  weight_min:'',
+  weight_max:'', 
+  temperament:[], 
+  life_span: ''
+})
+
+    console.log(input.temperament);
 
     function handleChange(e) {
         setInput({
@@ -118,27 +123,37 @@ export default function Create(){
           );
     }
 
-    function handleSelectTemperaments(e) {
-        setInput({
-            ...input,
-            temperament: [...input.temperament, e.target.value]
-        })
-    }
 
-    function handleDeleteTemperaments(e) {
-      setInput({
+    function handleSelectTemperaments(e) {
+      const selectedTemperament = e.target.value;
+
+      // Verifica si el temperamento seleccionado aún no está en la matriz
+      if (!input.temperament.includes(selectedTemperament)) {
+        setInput({
           ...input,
-          temperament: input.temperament.filter( t => t !== e )
-      })
+          temperament: [...input.temperament, selectedTemperament],
+        });
+      }else{
+        
+        alert('Ya has seleccionado ese temperamento')
+      }
   }
 
+  function handleDeleteTemperaments(e) {
+    setInput({
+        ...input,
+        temperament: input.temperament.filter( t => t !== e )
+    })
+}
  
 
 
     function handleSubmit(e) {
         e.preventDefault();
+
+  
         let aux = Object.keys(inputsErrors);
-        if (aux.length === 0) {
+        if (aux.length === 0 && input.temperament.length>0) {
     
             setInputsErrors({
               name: '', 
@@ -154,7 +169,12 @@ export default function Create(){
       
           
           } else {
-            return alert('Check info');
+        if (input.temperament.length<1) {
+         return alert('selecciona un temperamento')
+        } else {
+          return alert('Check info');
+        }
+            
           }
 
         dispatch(postDog(input))
@@ -241,14 +261,23 @@ export default function Create(){
 
             </div>
 
+
+
+            <div className="formItems">
+            <div className="label">
+                 <label > Life span</label>
+                 </div>
+                    <input   type = 'number' value = {input.life_span}  onChange = {handleChange} name='life_span'  key="life_span" />
+                    <span>{inputsErrors?.life_span && inputsErrors.life_span}</span>
+            </div>
               
                    <div className="formItems">
                                
                    <div className="label">
                  <label >Temperament</label>
                  </div>
-                    <select multiple  value={input.temperament} onChange={e=>handleSelectTemperaments(e)}>
-                      
+                    <select onChange={e=>handleSelectTemperaments(e)}>
+                        <option value='temperament' key='temperament'></option>
                         {temperamentsDb.map((t) => {
                             return(
                                 <option value={t} key={t}>{t + ' '}</option>
@@ -263,15 +292,7 @@ export default function Create(){
                     )}
                     </ul>
                    </div>
-    
-    
-            <div className="formItems">
-            <div className="label">
-                 <label > Life span</label>
-                 </div>
-                    <input   type = 'number' value = {input.life_span}  onChange = {handleChange} name='life_span'  key="life_span" />
-                    <span>{inputsErrors?.life_span && inputsErrors.life_span}</span>
-            </div>
+ 
               
           
       
